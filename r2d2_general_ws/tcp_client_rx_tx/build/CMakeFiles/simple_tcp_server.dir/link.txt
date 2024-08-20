@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -pthread -pthread  -rdynamic CMakeFiles/simple_tcp_server.dir/simple_tcp_server.cpp.o CMakeFiles/simple_tcp_server.dir/umba_crc_table.c.o  -o simple_tcp_server  /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0 

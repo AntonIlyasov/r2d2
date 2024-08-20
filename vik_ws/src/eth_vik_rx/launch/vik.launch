@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!--node`s params-->
+	<arg name="tcp_port_general" 		default="20000"/>
+	<arg name="tcp_port_save_frame" 	default="1111"/>
+	<arg name="tcp_ip_save_frame" 		default="127.0.0.1"/>
+
+<!--launch nodes-->
+	<node pkg="vik_tcp_rx" type="vik_tcp_rx" name="vik_tcp_rx" output="screen"/>
+		<param name="_tcp_port_general"	value="$(arg tcp_port_general)"/>
+
+	<node pkg="cam_control" type="cam_control" name="cam_control" output="screen"/>
+		<param name="_tcp_port_save_frame" value="$(arg tcp_port_save_frame)"/>
+		<param name="_tcp_ip_save_frame" value="$(arg tcp_ip_save_frame)"/>
+
+	<node pkg="tof_cam" type="tof_cam" name="tof_cam" output="screen"/>
+
+<!-- Start the RTSP server -->
+	<node pkg="nodelet" type="nodelet" name="standalone_nodelet" args="manager" output="screen"/>
+
+	<node pkg="nodelet" type="nodelet" name="Image2RTSPNodelet" args="load image2rtsp/Image2RTSPNodelet standalone_nodelet" output="screen">
+		<!-- Read the stream setup file -->
+		<rosparam command="load" file="$(find ros_rtsp)/config/stream_setup.yaml" />
+		</node>
+		
+</launch>

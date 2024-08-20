@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!--node`s params-->
+	<arg name="CAN_baudrate" 								default="250000"/>
+	<arg name="msg" 										default=""/>
+
+<!--launch nodes-->
+	<node pkg="cansend" type="cansend_node" name="cansend"/>
+		<param name="_CAN_baudrate" 						value="$(arg CAN_baudrate)"/>
+		<param name="_msg" 									value="$(arg msg)"/>	
+
+</launch>

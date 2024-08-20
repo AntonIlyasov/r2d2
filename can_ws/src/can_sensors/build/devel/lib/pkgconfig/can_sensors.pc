@@ -1,0 +1,8 @@
+prefix=/home/anton202/r2d2/can_ws/src/can_sensors/build/devel
+
+Name: can_sensors
+Description: Description of can_sensors
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

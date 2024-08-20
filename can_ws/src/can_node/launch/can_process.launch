@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="can_sensors" type="air_analyzer_module" name="air_analyzer_module" output="screen"> </node>
+    <node pkg="can_sensors" type="profilimetr" name="profilimetr" output="screen"> </node>
+    <node pkg="socketcan_bridge" type="socketcan_bridge_node" name="socketcan_node" output="screen"> </node>
+    <node pkg="can_node"    type="can_node" name="can_node" output="screen"> </node>
+</launch>

@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -pthread -pthread  -rdynamic CMakeFiles/udp_client.dir/udp_client.cpp.o CMakeFiles/udp_client.dir/umba_crc_table.c.o  -o udp_client  /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0 
