@@ -70,6 +70,10 @@ void Tof_cam::process(){
       setAcceptedAnswer(dataToTofCamControl[1], static_cast<uint8_t>(TofCamCmd::saveDepth), true);//!!!!!
       publishDepthFrame16C1();
       break;
+    case static_cast<uint8_t>(TofCamCmd::saveVideo):            //0x0a
+      setAcceptedAnswer(dataToTofCamControl[1], static_cast<uint8_t>(TofCamCmd::saveVideo), true);//!!!!!
+      publishColorFrame();
+      break;
     case static_cast<uint8_t>(TofCamCmd::keepalive):             //0x00
       setAcceptedAnswer(dataToTofCamControl[0], static_cast<uint8_t>(TofCamCmd::shutdown), false);//!!!!
       // shutdownTofCam();

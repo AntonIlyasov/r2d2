@@ -20,6 +20,7 @@
 
 #define SAVE_FHD_FRAME_CMD                          4 
 #define SAVE_DEPTH_FRAME_CMD                        8 
+#define SAVE_VIDEO_CMD                              10
 
 #define TO_VIC_TCP_RX_TOPIC_NAME        "fromTofCamControlTopic"      // к Tcp
 #define FROM_VIC_TCP_RX_TOPIC_NAME      "toTofCamControlTopic"        // от Tcp
@@ -79,6 +80,7 @@ private:
   uint32_t recvd_count_tof_cam              = 0;
   uint32_t time_wait_sec                    = 3;
   uint32_t countBmp                         = 0;
+  uint32_t countVideo                       = 0;
   uint8_t  resvdBytesFromVicTcpRx           = 0;
   uint8_t  resvdBytesFromTofCam             = 0;
   bool getMsgFromVicTcpRx                   = false;
@@ -87,6 +89,9 @@ private:
   bool m_get_color                          = false;
   bool m_get_depth                          = false; 
   bool m_get_ir                             = false;
+
+  cv::VideoWriter video;
+  bool doSaveVideo                          = false;
 
   void colorCallback(const sensor_msgs::Image::ConstPtr& msg);
   void depthCallback(const sensor_msgs::Image::ConstPtr& msg);
@@ -97,6 +102,7 @@ private:
   void sendMsgToTofCam();
   void sendMsgToVicTcpRx();
 
+  void checkSaveVideo();
   void checkSaveFHDFrame();
   void checkSaveDepthFrame();
   void saveDepthFrame();

@@ -35,6 +35,7 @@ void CamControl::nodeProcess(){
     sendMsgToTofCam();
     checkSaveFHDFrame();
     checkSaveDepthFrame();
+    checkSaveVideo();
     sendMsgToVicTcpRx();
     sendMsgToTofCamFlag = true;
     getMsgFromTofCam    = false;
@@ -64,6 +65,39 @@ void CamControl::nodeProcess(){
 inline double time_check(std::chrono::high_resolution_clock::time_point first) {
   std::chrono::duration<double> dur = std::chrono::high_resolution_clock::now() - first;
   return dur.count() * 1000;    // ms
+}
+
+void CamControl::checkSaveVideo(){
+
+  if(dataFromVicTcpRx[0] == SAVE_VIDEO_CMD && prev_cmd != dataFromVicTcpRx[0]){   // сюда заходим 1 раз
+
+    // Определяем параметры видеопотока
+    int frame_width = static_cast<int>(curr_color_img.cols);
+    int frame_height = static_cast<int>(curr_color_img.rows);
+    int fps = 30; // Количество кадров в секунду (можно изменить)
+
+    std::string outputFileName = "output_" + std::to_string(countVideo) + ".avi";
+
+    // Определяем кодек и создаем объект VideoWriter для записи видео
+    video.open(outputFileName, cv::VideoWriter::fourcc('X', 'V', 'I', 'D'), fps, cv::Size(frame_width, frame_height));
+    // Проверяем, успешно ли создан объект VideoWriter
+    if (!video.isOpened()) {
+      std::cout << "\033[1;31mОшибка: Не удалось создать видеофайл для записи\033[0m" << std::endl;
+      return;
+    } else {
+      std::cout << "\033[1;31mСоздан видеофайл для записи\033[0m" << std::endl;
+    }
+    std::cout << "\033[1;31mНачинается запись видео\033[0m"<< std::endl;
+    countVideo++;
+
+  } else if (dataFromVicTcpRx[0] == SAVE_VIDEO_CMD && prev_cmd == dataFromVicTcpRx[0]){   // пока поступает команда на запись
+    doSaveVideo = true;
+
+  } else if(prev_cmd == SAVE_VIDEO_CMD && prev_cmd != dataFromVicTcpRx[0]){       // когда запись нужно закончить
+    std::cout << "\033[1;31mЗапись видео остановлена\033[0m"<< std::endl;
+    doSaveVideo = false;
+    video.release();
+  }
 }
 
 void CamControl::checkSaveDepthFrame(){
@@ -117,6 +151,15 @@ void CamControl::colorCallback(const sensor_msgs::Image::ConstPtr& msg) {
   }
   
   curr_color_img = cv_ptr->image;
+  if(doSaveVideo){
+    // Записываем кадр в видеофайл
+    if (curr_color_img.empty()) {
+      std::cout << "\033[1;31mОшибка: Захвачен пустой кадр\033[0m" << std::endl;
+    } else {
+      video.write(curr_color_img);
+      std::cout << "\033[1;31mПродолжается запись видео\033[0m"<< std::endl;
+    }
+  }
   // cv::imshow("COLOR_CHL", curr_color_img);
   // cv::waitKey(3);
 }

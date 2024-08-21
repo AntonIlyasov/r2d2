@@ -15,7 +15,9 @@
 #define TO_DEPTH_TOPIC_NAME "toDepthTopic"
 #define TO_IR_TOPIC_NAME    "toIrTopic"
 
-enum class TofCamCmd {keepalive = 0, shutdown = 2, reset = 0xB, turnOn = 1, publishNormalQuality = 0xC, publishMaxQuality = 0xD, saveMaxQuality = 4, saveDepth = 8, publishDepth = 9};
+enum class TofCamCmd {keepalive = 0, shutdown = 2, reset = 0xB, turnOn = 1, publishNormalQuality = 0xC,
+                      publishMaxQuality = 0xD, saveMaxQuality = 4, saveDepth = 8, publishDepth = 9,
+                      saveVideo = 0x0a};
 enum class TofCamErrorStatus {error, allOk};
 
 class Tof_cam{

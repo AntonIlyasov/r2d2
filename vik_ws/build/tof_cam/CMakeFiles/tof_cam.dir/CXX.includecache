@@ -144,10 +144,6 @@ std_msgs/Int32.h
 boost/asio.hpp
 -
 
-/home/anton202/r2d2/vik_ws/src/tof_cam/src/OpenNI2OpenCV.cpp
-OpenNI2OpenCV.h
-/home/anton202/r2d2/vik_ws/src/tof_cam/src/OpenNI2OpenCV.h
-
 /home/anton202/r2d2/vik_ws/src/tof_cam/src/tof_cam.cpp
 tof_cam.h
 /home/anton202/r2d2/vik_ws/src/tof_cam/src/tof_cam.h
@@ -159,6 +155,14 @@ sensor_msgs/image_encodings.h
 -
 tcp_answers.h
 /home/anton202/r2d2/vik_ws/src/tof_cam/src/tcp_answers.h
+
+/home/anton202/r2d2/vik_ws/src/tof_cam/src/tof_cam_node.cpp
+ros/ros.h
+-
+iostream
+-
+tof_cam.h
+/home/anton202/r2d2/vik_ws/src/tof_cam/src/tof_cam.h
 
 /opt/ros/noetic/include/cv_bridge/cv_bridge.h
 sensor_msgs/Image.h
