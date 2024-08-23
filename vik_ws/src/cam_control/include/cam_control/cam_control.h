@@ -91,7 +91,9 @@ private:
   bool m_get_ir                             = false;
 
   cv::VideoWriter video;
-  bool doSaveVideo                          = false;
+  cv::VideoCapture capture;
+  std::string rtsp_url;
+  cv::Mat frame;
 
   void colorCallback(const sensor_msgs::Image::ConstPtr& msg);
   void depthCallback(const sensor_msgs::Image::ConstPtr& msg);

@@ -3,4 +3,5 @@
 
 <!--launch nodes-->
 	<node pkg="tof_cam" type="tof_cam" name="tof_cam" output="screen"/>
+
 </launch>
