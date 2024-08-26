@@ -20,7 +20,7 @@ CamControl::CamControl(std::string tcp_ip_save_frame, int tcp_port_save_frame)
   depth_sub       = _node.subscribe(TO_DEPTH_TOPIC_NAME,  0, &CamControl::depthCallback, this);
   ir_sub          = _node.subscribe(TO_IR_TOPIC_NAME,     0, &CamControl::irCallback,    this);
 
-  rtsp_url = "rtsp://192.168.100.1:8554/back";
+  rtsp_url = "rtsp://192.168.100.2:8554/back";
 
   memset(dataFromVicTcpRx, 0, sizeof(dataFromVicTcpRx));
   memset(dataToVicTcpRx, 0, sizeof(dataToVicTcpRx));
