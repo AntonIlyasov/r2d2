@@ -90,8 +90,6 @@ private:
   bool m_get_depth                          = false; 
   bool m_get_ir                             = false;
 
-  cv::VideoWriter video;
-  cv::VideoCapture capture;
   std::string rtsp_url;
   cv::Mat frame;
 

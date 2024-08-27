@@ -20,7 +20,7 @@ CamControl::CamControl(std::string tcp_ip_save_frame, int tcp_port_save_frame)
   depth_sub       = _node.subscribe(TO_DEPTH_TOPIC_NAME,  0, &CamControl::depthCallback, this);
   ir_sub          = _node.subscribe(TO_IR_TOPIC_NAME,     0, &CamControl::irCallback,    this);
 
-  rtsp_url = "rtsp://192.168.100.2:8554/back";
+  rtsp_url = "rtsp://192.168.100.1:8554/back";
 
   memset(dataFromVicTcpRx, 0, sizeof(dataFromVicTcpRx));
   memset(dataToVicTcpRx, 0, sizeof(dataToVicTcpRx));
@@ -81,66 +81,67 @@ inline double time_check(std::chrono::high_resolution_clock::time_point first) {
 
 void CamControl::checkSaveVideo(){
 
-  if(dataFromVicTcpRx[0] == SAVE_VIDEO_CMD && prev_cmd != dataFromVicTcpRx[0]){   // сюда заходим 1 раз
+  if (dataFromVicTcpRx[0] != SAVE_VIDEO_CMD) return;
 
-    capture.open(rtsp_url);
-    if (!capture.isOpened())
-    {
-      ROS_ERROR("Failed to open RTSP stream: %s", rtsp_url.c_str());
-    }
+  cv::VideoWriter video;
+  cv::VideoCapture capture;
 
-    std::chrono::high_resolution_clock::time_point first = std::chrono::high_resolution_clock::now();
-    while (curr_color_img.cols != 1280 || curr_color_img.rows != 720){
-      std::cout << "\033[1;31mIMAGE IS NOT 1280х720!\033[0m\nSIZE: "
-                << curr_color_img.cols << " x " << curr_color_img.rows << std::endl;
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
-      ros::spinOnce();
-      if (time_check(first) > 5000.){
-        std::cout << "TIME OUT CHANGE CAM ON 1280х720 QUALITY\n";
-        return;
-      }
-    }
+  capture.open(rtsp_url);
+  if (!capture.isOpened())
+  {
+    ROS_ERROR("Failed to open RTSP stream: %s", rtsp_url.c_str());
+  }
 
-    // Определяем параметры видеопотока
-    cv::Size frame_size(capture.get(cv::CAP_PROP_FRAME_WIDTH), capture.get(cv::CAP_PROP_FRAME_HEIGHT));
-    if(frame_size.width == 0 || frame_size.height == 0){
-      std::cout << "\033[1;31mframe_size.width: \033[0m" << frame_size.width << std::endl;
-      std::cout << "\033[1;31mframe_size.height: \033[0m" << frame_size.height << std::endl;
-    }
-    int fps = 30; // Количество кадров в секунду (можно изменить)
-
-    std::string outputFileName = "output_" + std::to_string(countVideo) + ".avi";
-
-    // Определяем кодек и создаем объект VideoWriter для записи видео
-    video.open(outputFileName, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, frame_size);
-    
-    // Проверяем, успешно ли создан объект VideoWriter
-    if (!video.isOpened()) {
-      std::cout << "\033[1;31mОшибка: Не удалось создать видеофайл для записи\033[0m" << std::endl;
+  std::chrono::high_resolution_clock::time_point first = std::chrono::high_resolution_clock::now();
+  while (curr_color_img.cols != 640 || curr_color_img.rows != 480){
+    std::cout << "\033[1;31mIMAGE IS NOT 1280х720!\033[0m\nSIZE: "
+              << curr_color_img.cols << " x " << curr_color_img.rows << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    ros::spinOnce();
+    if (time_check(first) > 5000.){
+      std::cout << "TIME OUT CHANGE CAM ON 1280х720 QUALITY\n";
       return;
-    } else {
-      std::cout << "\033[1;32mСоздан видеофайл для записи\033[0m" << std::endl;
-    }
-
-    std::cout << "\033[1;32mНачинается запись видео\033[0m"<< std::endl;
-    countVideo++;
-
-  } else if (dataFromVicTcpRx[0] == SAVE_VIDEO_CMD && prev_cmd == dataFromVicTcpRx[0]){ // продолжаем запись видео
-
-    while(1){
-      capture >> frame;
-      video << frame;
-      std::cout << "\033[1;32mПродолжается запись видео\033[0m"<< std::endl;
-      ros::spinOnce();
-      
-      if(prev_cmd == SAVE_VIDEO_CMD && prev_cmd != dataFromVicTcpRx[0]){                // когда запись нужно закончить
-        std::cout << "\033[1;32mЗапись видео остановлена\033[0m"<< std::endl;
-        video.release();
-        capture.release();
-        break;
-      }
     }
   }
+
+  // Определяем параметры видеопотока
+  cv::Size frame_size(capture.get(cv::CAP_PROP_FRAME_WIDTH), capture.get(cv::CAP_PROP_FRAME_HEIGHT));
+  std::cout << "\033[1;31mframe_size.width: \033[0m" << frame_size.width << std::endl;
+  std::cout << "\033[1;31mframe_size.height: \033[0m" << frame_size.height << std::endl;
+  if (frame_size.width == 0 || frame_size.height == 0) return;
+
+  int fps = 30; // Количество кадров в секунду (можно изменить)
+
+  std::string outputFileName = "output_" + std::to_string(countVideo) + ".avi";
+
+  // Определяем кодек и создаем объект VideoWriter для записи видео
+  video.open(outputFileName, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, frame_size);
+
+  // Проверяем, успешно ли создан объект VideoWriter
+  if (!video.isOpened()) {
+    std::cout << "\033[1;31mОшибка: Не удалось создать видеофайл для записи\033[0m" << std::endl;
+    return;
+  } else {
+    std::cout << "\033[1;32mСоздан видеофайл для записи\033[0m" << std::endl;
+  }
+
+  std::cout << "\033[1;32mНачинается запись видео\033[0m"<< std::endl;
+  countVideo++;
+
+  while(1){
+    capture >> frame;
+    video << frame;
+    // std::cout << "\033[1;32mПродолжается запись видео\033[0m"<< std::endl;
+    ros::spinOnce();
+    
+    if(prev_cmd == SAVE_VIDEO_CMD && prev_cmd != dataFromVicTcpRx[0]){                // когда запись нужно закончить
+      std::cout << "\033[1;32mЗапись видео остановлена\033[0m"<< std::endl;
+      video.release();
+      capture.release();
+      break;
+    }
+  }
+
 }
 
 void CamControl::checkSaveDepthFrame(){
