@@ -20,7 +20,8 @@ CamControl::CamControl(std::string tcp_ip_save_frame, int tcp_port_save_frame)
   depth_sub       = _node.subscribe(TO_DEPTH_TOPIC_NAME,  0, &CamControl::depthCallback, this);
   ir_sub          = _node.subscribe(TO_IR_TOPIC_NAME,     0, &CamControl::irCallback,    this);
 
-  rtsp_url = "rtsp://192.168.100.1:8554/back";
+  rtsp_url = "rtsp://192.168.100.2:8554/back";
+  http_url = "http://192.168.100.2:8081/stream?topic=/usb_cam/image_raw&type=ros_compressed&type=mjpeg&quality=100";
 
   memset(dataFromVicTcpRx, 0, sizeof(dataFromVicTcpRx));
   memset(dataToVicTcpRx, 0, sizeof(dataToVicTcpRx));
@@ -62,7 +63,7 @@ void CamControl::nodeProcess(){
     fail_count++;
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
-  if (fail_count >= time_wait_msg_from_tof_cam * 1000){
+  if (fail_count/2 >= time_wait_msg_from_tof_cam * 1000){
     fail_count = 0;
     std::cout << "[TOF CAM IS NOT AVAILABLE]\n";
     sendMsgToTofCamFlag = false;
@@ -71,6 +72,7 @@ void CamControl::nodeProcess(){
     dataToVicTcpRx[1]   = static_cast<uint8_t>(TofCamControlErrorStatus::tof_cam_is_not_available);
     sendMsgToVicTcpRx();
   }
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }
 
 /*Время между вызовами данной функции*/
@@ -86,17 +88,18 @@ void CamControl::checkSaveVideo(){
   cv::VideoWriter video;
   cv::VideoCapture capture;
 
-  capture.open(rtsp_url);
+  capture.open(http_url);
   if (!capture.isOpened())
   {
-    ROS_ERROR("Failed to open RTSP stream: %s", rtsp_url.c_str());
+    ROS_ERROR("Failed to open HTTP stream: %s", http_url.c_str());
+    return;
   }
 
   std::chrono::high_resolution_clock::time_point first = std::chrono::high_resolution_clock::now();
   while (curr_color_img.cols != 640 || curr_color_img.rows != 480){
     std::cout << "\033[1;31mIMAGE IS NOT 1280х720!\033[0m\nSIZE: "
               << curr_color_img.cols << " x " << curr_color_img.rows << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
     ros::spinOnce();
     if (time_check(first) > 5000.){
       std::cout << "TIME OUT CHANGE CAM ON 1280х720 QUALITY\n";
@@ -128,18 +131,24 @@ void CamControl::checkSaveVideo(){
   std::cout << "\033[1;32mНачинается запись видео\033[0m"<< std::endl;
   countVideo++;
 
-  while(1){
+  ros::Rate r(30);
+
+  while(ros::ok()){
     capture >> frame;
     video << frame;
+    frame.release();
     // std::cout << "\033[1;32mПродолжается запись видео\033[0m"<< std::endl;
     ros::spinOnce();
     
     if(prev_cmd == SAVE_VIDEO_CMD && prev_cmd != dataFromVicTcpRx[0]){                // когда запись нужно закончить
       std::cout << "\033[1;32mЗапись видео остановлена\033[0m"<< std::endl;
+      frame.release();
       video.release();
       capture.release();
       break;
     }
+    
+    r.sleep();
   }
 
 }

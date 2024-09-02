@@ -27,7 +27,7 @@
 #define TO_TOF_CAM_TOPIC_NAME           "toTofCamTopic"               // к камере
 #define FROM_TOF_CAM_TOPIC_NAME         "fromTofCamTopic"             // от камеры
 
-#define TO_COLOR_TOPIC_NAME "toColorTopic"
+#define TO_COLOR_TOPIC_NAME "usb_cam/image_raw"
 #define TO_DEPTH_TOPIC_NAME "toDepthTopic"
 #define TO_IR_TOPIC_NAME    "toIrTopic"
 
@@ -91,6 +91,7 @@ private:
   bool m_get_ir                             = false;
 
   std::string rtsp_url;
+  std::string http_url;
   cv::Mat frame;
 
   void colorCallback(const sensor_msgs::Image::ConstPtr& msg);

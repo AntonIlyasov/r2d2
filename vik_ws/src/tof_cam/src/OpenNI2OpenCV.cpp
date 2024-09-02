@@ -403,7 +403,7 @@ namespace OpenNIOpenCV {
       case OpenNIOpenCV::COLOR_1280_720_RGB888_30FPS:
         if (colorVideoMode == videomodes[0]) return;
         colorVideoMode = videomodes[0];
-        if (colorVideoMode == videomodes[1]){
+        if (colorVideoMode == videomodes[0]){
           std::cout << "SUCCESS colorVideoMode Set" << std::endl;
           std::cout << "colorVideoMode: " << colorVideoMode.getResolutionX() << "x" << colorVideoMode.getResolutionY()<< ": " << PixelFormatToStr(colorVideoMode.getPixelFormat()) << ": " << colorVideoMode.getFps() << std::endl;
         }

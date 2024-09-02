@@ -1,0 +1,12 @@
+# Set up your streams to rtsp here.
+port: "8554"
+streams: # Cannot rename - must leave this as is.
+
+  stream-yay:
+    type: topic
+    source: /toColorTopic
+    mountpoint: /back
+    caps: queue max-size-buffers=10 max-size-bytes=0 max-size-time=1000000000 ! decodebin ! \
+    videoconvert ! videoscale ! video/x-raw,width=640,height=480 ! jpegenc ! appsink ! rtph264pay
+    bitrate: 500
+

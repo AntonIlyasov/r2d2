@@ -11,7 +11,7 @@
 #define TO_TOF_CAM_CONTROL_TOPIC_NAME       "fromTofCamTopic"   // от камеры
 #define FROM_TOF_CAM_CONTROL_TOPIC_NAME     "toTofCamTopic"     // к камере
 
-#define TO_COLOR_TOPIC_NAME "toColorTopic"
+#define TO_COLOR_TOPIC_NAME "usb_cam/image_raw"
 #define TO_DEPTH_TOPIC_NAME "toDepthTopic"
 #define TO_IR_TOPIC_NAME    "toIrTopic"
 
