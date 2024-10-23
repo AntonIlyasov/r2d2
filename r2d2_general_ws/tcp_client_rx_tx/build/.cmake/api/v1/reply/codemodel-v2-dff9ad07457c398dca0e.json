@@ -1,0 +1,77 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "udp_client_rx_tx",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "simple_tcp_client::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-simple_tcp_client-03acb8e2c40b55a3f22b.json",
+					"name" : "simple_tcp_client",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "simple_tcp_server::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-simple_tcp_server-e97b6dd65168ab1fb725.json",
+					"name" : "simple_tcp_server",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tcp_client_rx_tx::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tcp_client_rx_tx-6f54afb8b6bcd1491152.json",
+					"name" : "tcp_client_rx_tx",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+		"source" : "/home/anton202/r2d2_general_ws/tcp_client_rx_tx"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

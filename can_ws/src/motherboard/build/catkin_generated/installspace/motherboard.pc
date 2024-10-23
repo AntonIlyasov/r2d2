@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: motherboard
+Description: Description of motherboard
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

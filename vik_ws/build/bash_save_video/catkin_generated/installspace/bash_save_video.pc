@@ -1,0 +1,8 @@
+prefix=/home/anton202/r2d2/vik_ws/install
+
+Name: bash_save_video
+Description: Description of bash_save_video
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

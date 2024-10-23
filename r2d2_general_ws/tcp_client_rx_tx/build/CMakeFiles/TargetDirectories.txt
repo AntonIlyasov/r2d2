@@ -1,0 +1,5 @@
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles/edit_cache.dir
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles/rebuild_cache.dir
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles/simple_tcp_server.dir
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles/simple_tcp_client.dir
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles/tcp_client_rx_tx.dir

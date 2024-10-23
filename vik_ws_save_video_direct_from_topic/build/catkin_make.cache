@@ -1,0 +1,2 @@
+cam_control:eth_vik_rx:ros_rtsp:tof_cam:web_video_server
+-DCATKIN_DEVEL_PREFIX=/home/anton202/r2d2/vik_ws_save_video_direct_from_topic/devel -DCMAKE_INSTALL_PREFIX=/home/anton202/r2d2/vik_ws_save_video_direct_from_topic/install -G Unix Makefiles

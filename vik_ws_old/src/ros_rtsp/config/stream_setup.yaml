@@ -1,0 +1,11 @@
+# Set up your streams to rtsp here.
+port: "8554"
+streams: # Cannot rename - must leave this as is.
+
+  stream-yay:
+    type: topic
+    source: /toColorTopic
+    mountpoint: /back
+    caps: video/x-raw,framerate=10/1,width=640,height=480
+    bitrate: 500
+

@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/anton202/r2d2_general_ws/udp_client/udp_client.cpp
+cstdlib
+-
+iostream
+-
+boost/asio.hpp
+-
+boost/thread.hpp
+-
+boost/chrono.hpp
+-
+stdio.h
+-
+string.h
+-
+umba_crc_table.h
+/home/anton202/r2d2_general_ws/udp_client/umba_crc_table.h
+
+/home/anton202/r2d2_general_ws/udp_client/umba_crc_table.h
+stdint.h
+-
+

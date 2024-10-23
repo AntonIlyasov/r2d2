@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!--node`s params-->
+	<arg name="tcp_port_general" 		default="20000"/>
+	<arg name="tcp_port_save_frame" 	default="1111"/>
+	<arg name="tcp_ip_save_frame" 		default="127.0.0.1"/>
+
+<!--launch nodes-->
+	<node pkg="vik_tcp_rx" type="vik_tcp_rx" name="vik_tcp_rx" output="screen"/>
+		<param name="_tcp_port_general"	value="$(arg tcp_port_general)"/>
+
+	<node pkg="cam_control" type="cam_control" name="cam_control" output="screen"/>
+		<param name="_tcp_port_save_frame" value="$(arg tcp_port_save_frame)"/>
+		<param name="_tcp_ip_save_frame" value="$(arg tcp_ip_save_frame)"/>
+		
+
+<!-- Start the HTTP server -->
+	<node pkg="web_video_server" type="web_video_server" name="web_video_server" output="screen"/>
+		<param name="_address"	value="192.168.100.2"/>
+		<param name="_port"		value="8081"/>
+
+
+</launch>
